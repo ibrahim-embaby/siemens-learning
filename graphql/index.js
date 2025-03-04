@@ -20,18 +20,48 @@ const resolvers = {
       return db.games;
     },
     game(_, args) {
+      // handle in case user inputs invalid game id
+      if (args.id < 1 || args.id >= db.games.length) {
+        throw new GraphQLError("Inavalid ID", {
+          extensions: {
+            code: ApolloServerErrorCode.BAD_USER_INPUT,
+            args: "id",
+            http: {
+              status: 400,
+            },
+          },
+        });
+      }
       return db.games.find((game) => game.id === args.id);
     },
     authors() {
       return db.authors;
     },
     author(_, args) {
+      // handle in case user inputs invalid author id
+      if (args.id < 1 || args.id >= db.authors.length) {
+        throw new GraphQLError("Inavalid ID", {
+          extensions: {
+            code: ApolloServerErrorCode.BAD_USER_INPUT,
+            args: "id",
+          },
+        });
+      }
       return db.authors.find((author) => author.id === args.id);
     },
     reviews() {
       return db.reviews;
     },
     review(_, args) {
+      // handle in case user inputs invalid review id
+      if (args.id < 1 || args.id >= db.reviews.length) {
+        throw new GraphQLError("Inavalid ID", {
+          extensions: {
+            code: ApolloServerErrorCode.BAD_USER_INPUT,
+            args: "id",
+          },
+        });
+      }
       return db.reviews.find((review) => review.id === args.id);
     },
   },
@@ -138,6 +168,17 @@ const serverCleanup = useServer({ schema }, server);
 
 const apolloServer = new ApolloServer({
   schema,
+  formatError: (formattedError, error) => {
+    return {
+      ...formattedError,
+      extensions: {
+        code: formattedError.extensions.code,
+        args: formattedError.extensions.args,
+        stacktrace: null,
+      },
+    };
+  },
+  // includeStacktraceInErrorResponses: false,
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     {
