@@ -6,8 +6,13 @@ This repository documents my learning journey through various technologies as pa
 
 ## Technologies Covered
 
-- GraphQL
-- Prisma
+- GraphQL Basics
+- GraphQL Error Handling
+- GraphQL Subscriptions
+- Prisma Basics
+
+## Upcoming
+
 - TypeScript
 - TypeGraphQL
 - AntDesign
