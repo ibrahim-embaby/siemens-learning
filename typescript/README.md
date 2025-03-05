@@ -10,3 +10,4 @@
     8- Advanced Types
     9- Optional Chaining
     10- Generics
+    11- Modules
