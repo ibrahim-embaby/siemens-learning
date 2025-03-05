@@ -4,3 +4,4 @@
     2- The any Type
     3- Arrays
     4- Tuples
+    5- Enums
