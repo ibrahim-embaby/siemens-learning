@@ -6,3 +6,4 @@
     4- Tuples
     5- Enums
     6- Functions
+    7- Objects
