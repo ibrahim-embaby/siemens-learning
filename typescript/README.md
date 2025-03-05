@@ -11,3 +11,4 @@
     9- Optional Chaining
     10- Generics
     11- Modules
+    12- Decorators
