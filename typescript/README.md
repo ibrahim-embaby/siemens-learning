@@ -7,3 +7,4 @@
     5- Enums
     6- Functions
     7- Objects
+    8- Advanced Types
