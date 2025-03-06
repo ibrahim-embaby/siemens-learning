@@ -10,10 +10,10 @@ This repository documents my learning journey through various technologies as pa
 - GraphQL Error Handling
 - GraphQL Subscriptions
 - Prisma Basics
+- TypeScript
 
 ## Upcoming
 
-- TypeScript
 - TypeGraphQL
 - AntDesign
 - TypeGraphQL-Prisma
