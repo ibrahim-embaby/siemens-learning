@@ -12,10 +12,10 @@ This repository documents my learning journey through various technologies as pa
 - Prisma Basics
 - TypeScript
 - GraphQL Shield
+- TypeGraphQL
 
 ## Upcoming
 
-- TypeGraphQL
 - AntDesign
 - TypeGraphQL-Prisma
 
