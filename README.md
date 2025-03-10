@@ -18,3 +18,8 @@ This repository documents my learning journey through various technologies as pa
 - TypeGraphQL
 - AntDesign
 - TypeGraphQL-Prisma
+
+## Libraries Issues Fix
+
+- graphql-ws => "^5.14.0"
+- @graphql-yoga/subscription => "^5.0.0"
