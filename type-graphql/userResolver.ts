@@ -7,7 +7,15 @@ import {
   ObjectType,
   Query,
   Resolver,
+  Root,
+  Subscription,
 } from "type-graphql";
+
+import { createPubSub } from "@graphql-yoga/subscription";
+
+export const pubSub = createPubSub<{
+  USER_ADDED: [User];
+}>();
 
 const users: User[] = [];
 
@@ -33,9 +41,21 @@ class UserResolver {
   }
 
   @Mutation(() => User)
-  addUser(@Arg("name") name: string, @Arg("role") role: string): User {
-    const newUser = { id: `${users.length + 1}`, name, role };
+  addUser(
+    @Arg("name") name: string,
+    @Arg("role") role: string,
+    @Arg("description", { nullable: true }) description?: string
+  ): User {
+    const newUser = { id: `${users.length + 1}`, name, role, description };
     users.push(newUser);
+    pubSub.publish("USER_ADDED", newUser);
+    return newUser;
+  }
+
+  @Subscription({
+    topics: "USER_ADDED",
+  })
+  userAdded(@Root() newUser: User): User {
     return newUser;
   }
 }

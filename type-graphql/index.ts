@@ -1,18 +1,51 @@
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-import { UserResolver } from "./userResolver";
-import { ApolloServer } from "apollo-server";
+import { pubSub, UserResolver } from "./userResolver";
+import { ApolloServer } from "@apollo/server";
+import express from "express";
+import http from "http";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { expressMiddleware } from "@apollo/server/express4";
 
 async function startServer() {
-  // Build TypeGraphQL schema
-  const schema = await buildSchema({ resolvers: [UserResolver] });
+  const app = express();
 
-  // Create Apollo Server
-  const server = new ApolloServer({ schema });
+  const schema = await buildSchema({
+    resolvers: [UserResolver],
+    pubSub: pubSub,
+  });
 
-  // start the server
-  server.listen().then(({ url }) => {
-    console.log(`🚀 Server running at ${url}`);
+  const httpServer = http.createServer(app);
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/graphql",
+  });
+
+  const serverCleanup = useServer({ schema }, wsServer);
+
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
+  });
+
+  await server.start();
+  app.use("/graphql", express.json(), expressMiddleware(server));
+
+  httpServer.listen({ port: 4000 }, () => {
+    console.log("🚀 Server running at http://localhost:4000/graphql");
   });
 }
 
