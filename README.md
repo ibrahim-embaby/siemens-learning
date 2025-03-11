@@ -13,11 +13,11 @@ This repository documents my learning journey through various technologies as pa
 - TypeScript
 - GraphQL Shield
 - TypeGraphQL
+- TypeGraphQL-Prisma
 
 ## Upcoming
 
 - AntDesign
-- TypeGraphQL-Prisma
 
 ## Libraries Issues Fix
 
